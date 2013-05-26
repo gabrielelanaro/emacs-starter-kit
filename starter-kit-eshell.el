@@ -6,9 +6,23 @@
       eshell-save-history-on-exit t
       eshell-cmpl-dir-ignore "\\`\\(\\.\\.?\\|CVS\\|\\.svn\\|\\.git\\)/\\'")
 
+(require 'em-prompt)
+
+(defun curr-dir-git-branch-string (pwd)
+  "Returns current git branch as a string, or the empty string if
+PWD is not in a git repo (or the git command is not found)."
+  (interactive)
+  (when (and (eshell-search-path "git")
+             (locate-dominating-file pwd ".git"))
+    (let ((git-output (shell-command-to-string (concat "cd " pwd " && git branch | grep '\\*' | sed -e 's/^\\* //'"))))
+      (propertize (concat "["
+              (if (> (length git-output) 0)
+                  (substring git-output 0 -1)
+                "(no branch)")
+              "]") 'face `(:foreground "red")))))
+
 (eval-after-load 'esh-opt
   '(progn
-     (require 'em-prompt)
      (require 'em-term)
      (require 'em-cmpl)
      (setenv "PAGER" "cat")
@@ -19,6 +33,16 @@
        (add-hook 'eshell-mode-hook ;; for some reason this needs to be a hook
                  '(lambda () (define-key eshell-mode-map "\C-a" 'eshell-bol)))
        (add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color))
+
+     ;; set eshell prompt with git branch name
+     (setq eshell-prompt-function
+           (lambda ()
+             (concat
+              (propertize
+               (abbreviate-file-name (eshell/pwd))
+               'face `(:foreground "yellow")) 
+              (or (curr-dir-git-branch-string (eshell/pwd)))
+              (if (= (user-uid) 0) " # " " $ "))))
 
      ;; TODO: submit these via M-x report-emacs-bug
      (add-to-list 'eshell-visual-commands "ssh")

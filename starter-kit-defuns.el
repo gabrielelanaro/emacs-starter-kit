@@ -262,5 +262,20 @@ Symbols matching the text at point are put first in the completion list."
   (let ((name (file-relative-name file)))
     (vc-git-command buf 0 name "blame" "-w" rev)))
 
+;; function to lookup erldoc
+(defun lookup_erldoc()
+  "look up the word under cursor on the erldoc site"
+  (interactive)
+  (let (myStr url)
+    (setq myStr (thing-at-point 'symbol))
+    (setq myStr (concat
+                 "http://erldocs.com/R14B03/stdlib/lists.html?i=0&search="
+                 myStr))
+    (message "querying %s" myStr)
+    (setq url myStr)
+    (browse-url url)
+   )
+)
+
 (provide 'starter-kit-defuns)
 ;;; starter-kit-defuns.el ends here

@@ -173,5 +173,50 @@
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/ido-prompt yas/x-prompt))
 (setq yas/wrap-around-region 'cua)
 
+;; customized diff
+(defun update-diff-colors ()
+  "update the colors for diff faces"
+  (set-face-attribute 'diff-added nil
+                      :foreground "white" :background "darkgreen")
+  (set-face-attribute 'diff-removed nil
+                      :foreground "white" :background "darkred")
+  (set-face-attribute 'diff-context nil
+                      :foreground "white" :background "black")
+  (set-face-attribute 'diff-changed nil
+                      :foreground "white" :background "purple"))
+
+(eval-after-load "diff-mode"
+  '(update-diff-colors))
+
+;; ido mode decoration
+(setq ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
+(add-hook 'ido-minibuffer-setup-hook #'(lambda() (set (make-local-variable 'truncate-lines) nil)))
+(add-hook 'ido-minibuffer-setup-hook #'(lambda() (enlarge-window 10)))
+
+;; underline style for current line highlight
+(global-hl-line-mode t)
+(setq hl-line-face 'underline)
+
+;; set the erc logs directory
+(setq erc-log-channels-directory "~/.erc/logs/")
+;; automatically save the log files
+(setq erc-save-buffer-on-part t)
+
+;; to always insert 8 spaces when inserting a tab
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 8)
+(setq indent-line-function 'insert-tab)
+
+;; set the encoding
+(setq default-buffer-file-coding-system 'iso-8859-1)
+(prefer-coding-system 'iso-8859-1)
+(set-language-environment "Latin-1")
+(setq file-buffer-coding 'iso-8859-1)
+
+;; white space
+(whitespace-mode t)
+(setq whitespace-line-column 80)
+(setq show-trailing-whitespace t)
+
 (provide 'starter-kit-misc)
 ;;; starter-kit-misc.el ends here

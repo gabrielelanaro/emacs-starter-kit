@@ -91,5 +91,23 @@
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 
+;; f keys
+(global-set-key (kbd "<f4>") 'erlang-align-arrows)
+(global-set-key (kbd "<f5>") 'revert-buffer)
+(global-set-key (kbd "<f6>") 'erlang-indent-region)
+(global-set-key (kbd "<f7>") 'insert_current_time_string)
+(global-set-key (kbd "<f8>") 'find-grep-dired)
+(global-set-key (kbd "<f9>")  'diff-mouse-goto-source)
+(global-set-key (kbd "<f11>") 'toggle-term-char-line-mode)
+(global-set-key (kbd "<f12>")  'lookup_erldoc)
+(global-set-key (kbd "\C-cl") 'org-store-link)
+(global-set-key (kbd "\C-ca") 'org-agenda)
+(global-set-key (kbd "M-g")  'goto-line)
+
+;; easily move around the buffer
+(global-set-key [C-left] 'windmove-left)
+(global-set-key [C-right] 'windmove-right)
+(global-set-key [C-up] 'windmove-up)
+
 (provide 'starter-kit-bindings)
 ;;; starter-kit-bindings.el ends here

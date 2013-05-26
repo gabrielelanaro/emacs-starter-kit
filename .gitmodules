@@ -1,0 +1,3 @@
+[submodule "edts-rte"]
+	path = edts-rte
+	url = git@github.com:liuhongchao/edts-rte.git

@@ -58,7 +58,6 @@
 (require 'dominating-file)
 
 ;; Load up starter kit customizations
-
 (require 'starter-kit-defuns)
 (require 'starter-kit-bindings)
 (require 'starter-kit-misc)
@@ -69,6 +68,7 @@
 (require 'starter-kit-ruby)
 (require 'starter-kit-js)
 (require 'starter-kit-python)
+(require 'starter-kit-erlang)
 (require 'starter-kit-completion)
 
 (regen-autoloads)
@@ -84,5 +84,22 @@
 (if (file-exists-p user-specific-config) (load user-specific-config))
 (if (file-exists-p user-specific-dir)
   (mapc #'load (directory-files user-specific-dir nil ".*el$")))
+
+;; load my favorite theme when running X
+(if (eq  (window-system) 'x)
+    (load-theme 'tsdh-dark))
+(set-face-attribute 'default nil :height 110)
+
+;; my customized scratch buffer
+(add-hook 'emacs-startup-hook 'my-startup-fun)
+(defun my-startup-fun ()
+  "customzied scratch buffer"
+  (let ((my-buffer (get-buffer "*scratch*")))
+    (with-current-buffer my-buffer
+      (insert "Welcome back Hongchao!\n"))
+    (switch-to-buffer my-buffer)))
+
+;; start the emacs server
+(server-start)
 
 ;;; init.el ends here
